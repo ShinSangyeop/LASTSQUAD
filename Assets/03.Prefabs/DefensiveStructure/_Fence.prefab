@@ -235,8 +235,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7679076742312360540}
   - component: {fileID: 7514242842863624004}
-  - component: {fileID: 7683064419124035828}
   - component: {fileID: 8680177753219440293}
+  - component: {fileID: 1954713872869033100}
   m_Layer: 16
   m_Name: chainlink_single
   m_TagString: FENCE
@@ -284,19 +284,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7696102017248333134}
   m_Enabled: 1
---- !u!65 &7683064419124035828
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7682076499666987156}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.2, y: 2.3, z: 0.5}
-  m_Center: {x: 0, y: 1, z: -0.1}
 --- !u!114 &8680177753219440293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +303,21 @@ MonoBehaviour:
   down: 0
   dead: 0
   state: 0
+  startTarget: {fileID: 0}
   Hp_Ui: {fileID: 6358300838761547427}
+--- !u!65 &1954713872869033100
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7682076499666987156}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.5, y: 2.59, z: 0.5}
+  m_Center: {x: 0.85, y: 1.03, z: -0.07}
 --- !u!1 &7682076501086592264
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +597,7 @@ PrefabInstance:
       objectReference: {fileID: 7679076742312360540}
     - target: {fileID: 8620837773073236190, guid: f250ed3939a8a2a449f8b50fbcde2974, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f250ed3939a8a2a449f8b50fbcde2974, type: 3}

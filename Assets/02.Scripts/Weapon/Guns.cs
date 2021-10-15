@@ -34,7 +34,7 @@ public class Guns : Weapon
 
     private void Start()
     {
-
+        StartCoroutine(CoWeaponTypeSetting());
     }
 
 
@@ -44,7 +44,6 @@ public class Guns : Weapon
 
     }
 
-<<<<<<< HEAD
     private IEnumerator CoWeaponTypeSetting()
     {
         while (weaponDict == null) { yield return null; }
@@ -67,8 +66,6 @@ public class Guns : Weapon
 
     }
 
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
     // 발사 조건의 확인은 WeaponManager에서 한다.
     // 발사 동작을 하면 WeaponManager에서 BulletFire()를 시행한다.

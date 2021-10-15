@@ -9,10 +9,12 @@ TagManager:
   - DEFENSIVEGOODS
   - STORE
   - WALL
-  - BLUEPRINT
   - UI
+  - BLUEPRINT
   - WALL_DAMAGE
-  - MAINDOOR
+  - FENCE
+  - BARBEDWIRE
+  - BUNKERDOOR
   layers:
   - Default
   - TransparentFX
@@ -29,7 +31,7 @@ TagManager:
   - WEAPON
   - 
   - 
-  - MAINDOOR
+  - BUNKERDOOR
   - DEFENSIVEGOODS
   - STORE
   - 
@@ -44,7 +46,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - BLUEPRINT
   - 
   m_SortingLayers:
   - name: Default

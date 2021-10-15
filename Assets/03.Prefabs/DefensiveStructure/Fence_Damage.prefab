@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1314401280508169724}
   m_Layer: 30
   m_Name: Fence_Damage
-  m_TagString: Untagged
+  m_TagString: BLUEPRINT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,11 +42,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1314401280508169715}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.8, y: 0.68, z: 0.5}
-  m_Center: {x: 0, y: 2.4355, z: 0}
+  m_Size: {x: 2.9, y: 0.68, z: 0.5}
+  m_Center: {x: 0, y: 2.33, z: 0}
 --- !u!114 &1314401280508169724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,8 +74,16 @@ PrefabInstance:
       value: chainlink_barbwire-1
       objectReference: {fileID: 0}
     - target: {fileID: 1000011073071200, guid: b4d5e3952e7666344a0f7b811e9e20b8, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011073071200, guid: b4d5e3952e7666344a0f7b811e9e20b8, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011073071200, guid: b4d5e3952e7666344a0f7b811e9e20b8, type: 3}
+      propertyPath: m_TagString
+      value: BARBEDWIRE
       objectReference: {fileID: 0}
     - target: {fileID: 4000010947026576, guid: b4d5e3952e7666344a0f7b811e9e20b8, type: 3}
       propertyPath: m_RootOrder
@@ -187,6 +195,10 @@ PrefabInstance:
     - target: {fileID: 2427987644375813358, guid: 1fe7df1fbc4253245bb2ef4851cf83eb, type: 3}
       propertyPath: m_Name
       value: BluePrint_Damage
+      objectReference: {fileID: 0}
+    - target: {fileID: 2427987644375813358, guid: 1fe7df1fbc4253245bb2ef4851cf83eb, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2430898825206872606, guid: 1fe7df1fbc4253245bb2ef4851cf83eb, type: 3}
       propertyPath: m_RootOrder

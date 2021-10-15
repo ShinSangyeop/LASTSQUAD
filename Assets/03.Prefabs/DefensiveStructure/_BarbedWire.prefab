@@ -214,8 +214,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.8, y: 0.68, z: 0.5}
-  m_Center: {x: 0, y: 2.4355, z: 0}
+  m_Size: {x: 3.45, y: 0.75, z: 0.5}
+  m_Center: {x: -0.33, y: 2.74, z: 0}
 --- !u!114 &8328175384286717787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +235,7 @@ MonoBehaviour:
   down: 0
   dead: 0
   state: 0
+  startTarget: {fileID: 0}
   Hp_Ui: {fileID: 4413723466590985716}
 --- !u!1 &1314554668176125983
 GameObject:
@@ -594,6 +595,10 @@ PrefabInstance:
       propertyPath: wall
       value: 
       objectReference: {fileID: 1311538139750707089}
+    - target: {fileID: 8620837773073236190, guid: f250ed3939a8a2a449f8b50fbcde2974, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f250ed3939a8a2a449f8b50fbcde2974, type: 3}
 --- !u!1 &4413723466590985716 stripped

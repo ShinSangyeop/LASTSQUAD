@@ -66,14 +66,12 @@ public class PlayerSkillManager : MonoBehaviour
             if (playerCtrl._select_SkillList[i] == "030000000")
             {
 
-
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"공격력이 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
                     $" 증가합니다.";
             }
             else if (playerCtrl._select_SkillList[i] == "030000001")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
@@ -83,7 +81,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030000002")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"최대 체력이 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -91,7 +88,6 @@ public class PlayerSkillManager : MonoBehaviour
             }
             else if (playerCtrl._select_SkillList[i] == "030010000")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
@@ -101,7 +97,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030010001")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"공격 속도가 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -109,7 +104,6 @@ public class PlayerSkillManager : MonoBehaviour
             }
             else if (playerCtrl._select_SkillList[i] == "030010002")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
@@ -119,7 +113,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030010003")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"아이템 사용 속도가 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -128,7 +121,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030010004")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"건설 속도가 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -136,7 +128,6 @@ public class PlayerSkillManager : MonoBehaviour
             }
             else if (playerCtrl._select_SkillList[i] == "030010005")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"]}</size></b>\n" +
@@ -148,7 +139,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030020000")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"공격 속도가 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -156,7 +146,6 @@ public class PlayerSkillManager : MonoBehaviour
             }
             else if (playerCtrl._select_SkillList[i] == "030020001")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"]}</size></b>\n" +
@@ -166,7 +155,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030020002")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"<color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -174,7 +162,6 @@ public class PlayerSkillManager : MonoBehaviour
             }
             else if (playerCtrl._select_SkillList[i] == "030020003")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
@@ -184,7 +171,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030020004")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"아이템 사용 속도가 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], perk1_Level + 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -192,7 +178,6 @@ public class PlayerSkillManager : MonoBehaviour
             }
             else if (playerCtrl._select_SkillList[i] == "030020005")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
@@ -202,7 +187,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030020006")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"건설 속도가 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], perk0_Level + 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -211,7 +195,6 @@ public class PlayerSkillManager : MonoBehaviour
             else if (playerCtrl._select_SkillList[i] == "030020007")
             {
 
-
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +
                     $"건설한 건물의 최대 체력이 <color=red>{(FindPlayerSkill.GetPlayerSkill(skillInfo["PlayerSkill_Name"], skillInfo["PlayerSkill_SkillUID"], perk1_Level + 1)[0] * float.Parse(skillInfo["PlayerSkill_Coefficient"])).ToString()}</color>" +
@@ -219,7 +202,6 @@ public class PlayerSkillManager : MonoBehaviour
             }
             else if (playerCtrl._select_SkillList[i] == "030020008")
             {
-
 
                 //playerUI.skillInfo_ImageList
                 playerUI.skillInfo_TextList[i].text = $"<b><size=50>{skillInfo["PlayerSkill_Name"].ToString()}</size></b>\n" +

@@ -8,10 +8,6 @@ public class ZombieSC : LivingEntity
 {
     public LayerMask target;           // 추적 대상 레이어
     private GameObject targetEntity;   // 추적 대상
-<<<<<<< HEAD
-=======
-    public GameObject mainDoor;
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     public GameObject player;
     public GameObject attackColl;      // 공격 판정 콜라이더
     float traceRange = 10f;            // 추적 반경
@@ -32,20 +28,15 @@ public class ZombieSC : LivingEntity
 
     List<GameObject> list = new List<GameObject>();
 
-<<<<<<< HEAD
     LayerMask targetLayer;
     Vector3 targetPosition;
     Vector3 targetSize;
 
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     private void Awake()    //초기화
     {
         // 게임 오브젝트로부터 사용할 컴포넌트 가져오기
         pathFinder = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
-        Setup();
-<<<<<<< HEAD
 
         LayerMask playerLayer = 1 << LayerMask.NameToLayer("PLAYER");
         LayerMask defensiveGoodsLayer = 1 << LayerMask.NameToLayer("DEFENSIVEGOODS");
@@ -54,12 +45,22 @@ public class ZombieSC : LivingEntity
 
         _exp = 1;
     }
+    private void Start()
+    {
+
+    }
+
 
     protected override void OnEnable()
     {
+        pathFinder.enabled = true;
         base.OnEnable();
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
+        Setup();
+        co_updatePath = StartCoroutine(UpdatePath());
+        co_chageTarget = StartCoroutine(ChangeTarget());
+        targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
+        targetSize = targetEntity.GetComponent<Collider>().bounds.size;
+
     }
 
     public void Setup(float newHP = 20f, float newAP = 0f, float newSpeed = 3f, float newDamage = 10f)
@@ -108,13 +109,6 @@ public class ZombieSC : LivingEntity
         return time;
     }
 
-    private void Start()
-    {
-        co_updatePath = StartCoroutine(UpdatePath());
-        co_chageTarget = StartCoroutine(ChangeTarget());
-        targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
-        targetSize = targetEntity.GetComponent<Collider>().bounds.size;
-    }
 
     private void Update()
     {
@@ -167,9 +161,19 @@ public class ZombieSC : LivingEntity
             Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, targetLayer);
 
             if (colliders.Length >= 1)
-                targetEntity = colliders[0].gameObject;
+            {
+                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                {
+                    if (colliders[0].gameObject.CompareTag("FENCE"))
+                    {
+                        targetEntity = colliders[0].gameObject;
+                    }
+                }
+                else
+                    targetEntity = colliders[0].gameObject;
+            }
             else
-                targetEntity = mainDoor;
+                targetEntity = startTarget;
 
             yield return new WaitForSeconds(0.1f);
         }
@@ -303,14 +307,8 @@ public class ZombieSC : LivingEntity
         pathFinder.enabled = false;
         enemyAnimator.SetTrigger("IsDead");
         Debug.Log(MoveDuration(eCharacterState.Die));
-        Die();
 
-
-        // 테스트 코드
-        if (GameManager.instance.enemies.Contains(this))
-        {
-            GameManager.instance.enemies.Remove(this);
-        }
+        StartCoroutine(WaitForDieAnimation(MoveDuration(eCharacterState.Die)));
 
     }
 

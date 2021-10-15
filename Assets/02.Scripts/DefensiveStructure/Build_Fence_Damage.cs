@@ -26,7 +26,7 @@ public class Build_Fence_Damage : MonoBehaviour
     {
         //Install();
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             BUildingBuild();
         }

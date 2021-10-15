@@ -7,7 +7,6 @@ public class ClutchSC : LivingEntity
 {
     public LayerMask target;
     private GameObject targetEntity;
-    public GameObject mainDoor;
     public GameObject attackColl;
 
     float traceRange = 10f;
@@ -26,12 +25,15 @@ public class ClutchSC : LivingEntity
 
     List<GameObject> list = new List<GameObject>();
 
+    LayerMask targetLayer;
+    Vector3 targetPosition;
+    Vector3 targetSize;
+
     private void Awake()
     {
         pathFinder = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         Setup();
-<<<<<<< HEAD
 
         LayerMask playerLayer = 1 << LayerMask.NameToLayer("PLAYER");
         LayerMask defensiveGoodsLayer = 1 << LayerMask.NameToLayer("DEFENSIVEGOODS");
@@ -44,8 +46,6 @@ public class ClutchSC : LivingEntity
     protected override void OnEnable()
     {
         base.OnEnable();
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     }
 
     public void Setup(float newHP = 100f, float newAP = 5f, float newSpeed = 6f, float newDamage = 9f)
@@ -240,9 +240,19 @@ public class ClutchSC : LivingEntity
             Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, 1 << LayerMask.NameToLayer("PLAYER") | 1 << LayerMask.NameToLayer("MAINDOOR"));
 
             if (colliders.Length >= 1)
-                targetEntity = colliders[0].gameObject;
+            {
+                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                {
+                    if (colliders[0].gameObject.CompareTag("FENCE"))
+                    {
+                        targetEntity = colliders[0].gameObject;
+                    }
+                }
+                else
+                    targetEntity = colliders[0].gameObject;
+            }
             else
-                targetEntity = mainDoor;
+                targetEntity = startTarget;
 
             yield return new WaitForSeconds(0.1f);
         }

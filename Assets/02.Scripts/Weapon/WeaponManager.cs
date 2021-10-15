@@ -61,15 +61,13 @@ public class WeaponManager : MonoBehaviour
 
         LayerMask enemyLayer = LayerMask.NameToLayer("ENEMY");
         LayerMask wallLayer = LayerMask.NameToLayer("WALL");
+        LayerMask uiLayer = LayerMask.NameToLayer("UI");
 
-        alllTargetLayerMask = (1 << enemyLayer) | (1 << wallLayer);
+        //alllTargetLayerMask = ((1 << enemyLayer) | (1 << wallLayer) | (1 << uiLayer));
+        alllTargetLayerMask = ((1 << enemyLayer) | (1 << wallLayer));
 
-
-<<<<<<< HEAD
-=======
     }
 
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     // Update is called once per frame
     void Update()
     {
@@ -113,6 +111,7 @@ public class WeaponManager : MonoBehaviour
 
         //Debug.Log(weaponPath + weaponDict["Weapon_Name"]);
         // 새로 생성한 무기를 현재 무기로 만들어준다.
+        //Debug.Log("____ Weapon Name: " + weaponDict["Weapon_Name"] + " ____");
         currWeaponObj = (GameObject)Instantiate(Resources.Load(weaponPath + weaponDict["Weapon_Name"]), this.transform);
 
         //currWeapon = weaponTr.GetChild(0).gameObject;
@@ -148,7 +147,7 @@ public class WeaponManager : MonoBehaviour
         // 무기 공격 속도 증가
         //Debug.Log("Fire Delay: " + currGun.fireDelay);
         currGun.fireDelay = ((60 / float.Parse(weaponDict["Weapon_AttackSpeed"])) * (1 - (playerCtrl.currIncAttackSpeed * 0.01f)));
-        Debug.Log("Fire Delay: " + currGun.fireDelay);
+        //Debug.Log("Fire Delay: " + currGun.fireDelay);
 
 
 
@@ -232,7 +231,6 @@ public class WeaponManager : MonoBehaviour
     /// </summary>
     private void TryFire()
     {
-<<<<<<< HEAD
         WeaponBulletChange();
 
         // 플레이어가 상점을 오픈한 상태이면 총을 발사하는 동작을 하지 못하도록 한다.
@@ -241,8 +239,6 @@ public class WeaponManager : MonoBehaviour
             return;
         }
 
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
         // 미완성 상태일 때 계속 에러가 나서 에러 발생시 그냥 함수 종료하게 함.
         // 재장전 중이 아닐 때
         if (isReload == false)
@@ -294,7 +290,6 @@ public class WeaponManager : MonoBehaviour
                 //currGun.fireTime = 0f;
             }
         }
-        WeaponBulletChange();
     }
 
     /// <summary>
@@ -312,6 +307,16 @@ public class WeaponManager : MonoBehaviour
             // 총 발사 딜레이보다 총을 쏘고 지난 시간이 더 크거나 같을 경우
             if (currGun.fireDelay <= currGun.fireTime)
             {
+                // 레이 캐스트를 확인해서 판정하는 함수
+                if (Cursor.lockState == CursorLockMode.None && CheckRaycastUI() == true)
+                {
+                    // UI를 타겟으로 하고 있고
+                    // 커서가 고정 상태가 아닐 경우
+                    // 발사 불가능한 상태로 한다.
+                    return false;
+                }
+
+
                 isFire = true; // 총 발사가 가능한 경우
                 anim.SetBool("IsFire", isFire);
                 canFire = true;
@@ -333,11 +338,7 @@ public class WeaponManager : MonoBehaviour
 
                 // 발사 이펙트 생성
                 currGun.BulletFire();
-<<<<<<< HEAD
 
-=======
-                // 레이 캐스트를 확인해서 판정하는 함수
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
                 CheckFireRaycast();
             }
             else
@@ -365,30 +366,30 @@ public class WeaponManager : MonoBehaviour
     private void CheckFireRaycast()
     {
         // 무기 사거리 내의 타겟 정보를 가져온다.
-        RaycastHit hitTarget = cameraRaycast.GetRaycastTarget(currGun.attackDistance, alllTargetLayerMask);
+        List<RaycastHit> hitTargets = cameraRaycast.GetWeaponRaycastTarget(currGun.attackDistance, alllTargetLayerMask, currGun.gunType);
         GameObject target;
 
-        try
-        {
-            target = hitTarget.transform.gameObject;
+        //Debug.Log("____ HIT COUNT: " + hitTargets.Count + " ____");
 
-<<<<<<< HEAD
+        foreach (RaycastHit hitTarget in hitTargets)
+        {
+            try
+            {
+                target = hitTarget.transform.gameObject;
+
 #if UNITY_EDITOR
-                Debug.Log("______ TARGET NAME: " + target.name);
+                //Debug.Log("______ TARGET NAME: " + target.name);
 #endif
                 //Debug.Log("____ Target Layer: " + LayerMask.LayerToName(target.layer));
             }
             catch (System.Exception e)
             {
-=======
-        }
-        catch (NullReferenceException e)
-        {
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 #if UNITY_EDITOR
-            Debug.LogWarning(e);
+                Debug.LogWarning("____ Target is Null: " + e);
+#endif
+                return;
+            }
 
-<<<<<<< HEAD
             //if (target == null) { return; }
 
             // Raycast 했을 때 대상이 무엇인가
@@ -396,13 +397,21 @@ public class WeaponManager : MonoBehaviour
             {
                 //Debug.Log("____ Gun Damage: " + currGun.damage + "____");
                 playerCtrl._playerExp += target.GetComponent<LivingEntity>().Damaged(currGun.damage + playerCtrl.currAddAttack, hitTarget.point, hitTarget.normal);
-                Debug.Log($"____ EXP: {playerCtrl._playerExp} ____");
+                //Debug.Log($"____ EXP: {playerCtrl._playerExp} ____");
                 playerCtrl.CheckLevelUp();
+
+                BloodEffectCtrl _effect = PlayerEffectCtrl.GetBloodEffect();
+                _effect.transform.position = hitTarget.point;
+                _effect.transform.rotation = Quaternion.LookRotation(hitTarget.normal);
+
                 // hitTarget.normal을 이용해서 만약 피 튀기는 이펙트를 만드려면 생성 방향을 저쪽으로 해주면 될 것 같다.
                 //Debug.DrawRay(hitTarget.point, hitTarget.normal, Color.red, 20f);
             }
             else if (target.CompareTag("WALL"))
             {
+                SparkEffectCtrl _effect = PlayerEffectCtrl.GetSparkEffect();
+                _effect.gameObject.transform.position = hitTarget.point;
+                _effect.gameObject.transform.rotation = Quaternion.LookRotation(hitTarget.normal);
                 //Debug.Log("____ TARGET TAG WALL");
             }
             //else if (target.CompareTag("UI"))
@@ -411,15 +420,9 @@ public class WeaponManager : MonoBehaviour
             {
 
             }
-=======
-#endif
-            return;
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
         }
 
-        //if (target == null) { return; }
 
-<<<<<<< HEAD
         return;
     }
 
@@ -433,28 +436,23 @@ public class WeaponManager : MonoBehaviour
         bool lookUI = false;
 
         RaycastHit hit;
-=======
-        // Raycast 했을 때 대상이 무엇인가
-        if (target.CompareTag("ENEMY"))
-        {
-            //Debug.Log("____Gun Damage: " + currGun.damage + "____");
-            target.GetComponent<LivingEntity>().Damaged(currGun.damage + playerCtrl.currAddAttack, hitTarget.point, hitTarget.normal);
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
-            // hitTarget.normal을 이용해서 만약 피 튀기는 이펙트를 만드려면 생성 방향을 저쪽으로 해주면 될 것 같다.
-            //Debug.DrawRay(hitTarget.point, hitTarget.normal, Color.red, 5f);
-        }
-        else if (target.CompareTag("WALL"))
+        Vector3 mousePos = Input.mousePosition;
+        Camera camera = Camera.main;
+        mousePos.z = camera.farClipPlane; // 카메라가 보는 방향과 시야를 가져온다.
+        Vector3 dir = camera.ScreenToWorldPoint(mousePos);
+        // 마우스를 고정 시켜도 마우스 위치랑 카메라 정면이랑 동일히자 않다.
+        //if (Physics.Raycast(transform.position, transform.forward, out hit, _raycastRange, targetLayerMasks))
+        if (Physics.Raycast(transform.position, dir, out hit, (1 << LayerMask.NameToLayer("UI"))))
         {
-<<<<<<< HEAD
             lookUI = true;
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
         }
 
+        return lookUI;
 
     }
+
 
     #endregion
 
@@ -472,7 +470,16 @@ public class WeaponManager : MonoBehaviour
     /// </summary>
     private void WeaponBulletChange()
     {
-        weaponBulletText.text = string.Format($"<b>{currGun.currBullet}</b> / <b>{currGun.carryBullet}</b>");
+        try
+        {
+            weaponBulletText.text = string.Format($"<b>{currGun.currBullet}</b> / <b>{currGun.carryBullet}</b>");
+        }
+        catch (System.Exception e)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning("____ Weapon Change Exception: " + e + " ____");
+#endif
+        }
     }
 
     #endregion

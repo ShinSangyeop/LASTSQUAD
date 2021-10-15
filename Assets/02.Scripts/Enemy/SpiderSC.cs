@@ -6,12 +6,8 @@ using UnityEngine.AI;
 public class SpiderSC : LivingEntity
 {
     public LayerMask target;
-<<<<<<< HEAD
     private GameObject targetEntity;
-=======
     private GameObject targetEnitity;
-    public GameObject mainDoor;
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     public GameObject player;
     public GameObject Bulletobj;
 
@@ -30,7 +26,7 @@ public class SpiderSC : LivingEntity
 
     List<GameObject> list = new List<GameObject>();
 
-
+    LayerMask targetLayer;
     Vector3 targetPosition;
     Vector3 targetSize;
 
@@ -45,7 +41,6 @@ public class SpiderSC : LivingEntity
         pathFinder = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         SetUp();
-<<<<<<< HEAD
 
         LayerMask playerLayer = 1 << LayerMask.NameToLayer("PLAYER");
         LayerMask defensiveGoodsLayer = 1 << LayerMask.NameToLayer("DEFENSIVEGOODS");
@@ -58,8 +53,6 @@ public class SpiderSC : LivingEntity
     protected override void OnEnable()
     {
         base.OnEnable();
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     }
     /// <summary>
     /// 초기 스텟 설정
@@ -208,13 +201,20 @@ public class SpiderSC : LivingEntity
             }
 
             if (colliders.Length >= 1)
-                targetEntity = colliders[0].gameObject;
+            {
+                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                {
+                    if (colliders[0].gameObject.CompareTag("FENCE"))
+                    {
+                        targetEntity = colliders[0].gameObject;
+                    }
+                }
+                else
+                    targetEntity = colliders[0].gameObject;
+            }
             else
-<<<<<<< HEAD
                 targetEntity = startTarget;
-=======
-                targetEnitity = mainDoor;
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
+                targetEnitity = startTarget;
 
             yield return new WaitForSeconds(0.1f);
         }

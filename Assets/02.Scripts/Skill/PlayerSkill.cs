@@ -383,7 +383,7 @@ public class FindPlayerSkill
     // 문자열로 다 때려 박아 뒀네...
     public static List<float> GetPlayerSkill(string _playerSkillName, string skillUID, int _skillLevel)
     {
-        Debug.Log("____FIND PLAYER SKILL____");
+        //Debug.Log("____FIND PLAYER SKILL____");
 
         string _skillName = DBManager.Instance.GetSkillInfo(skillUID)["Skill_Name"];
 
@@ -392,13 +392,13 @@ public class FindPlayerSkill
 
         PlayerSkill playerSkill = new PlayerSkill();
 
-        Debug.Log("____Skill Name: " + _skillName + "____");
+        //Debug.Log("____Skill Name: " + _skillName + "____");
 
         object playerSkillObj = playerSkillMethod.Invoke(playerSkill, new object[] { _skillName, _skillLevel });
 
         //Debug.Log("___Object: " + playerSkillObj + "___");
 
-        Debug.Log("____END FIND PLAYER SKILL____");
+        //Debug.Log("____END FIND PLAYER SKILL____");
 
         return (List<float>)playerSkillObj;
     }

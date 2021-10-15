@@ -8,7 +8,6 @@ public class MovidicSC : LivingEntity
     public LayerMask target;
 
     private GameObject targetEntity;
-    public GameObject maindoor;
     public GameObject attackColl;
     private GameObject pastTarget; // 이전 타겟 저장 변수
 
@@ -258,9 +257,19 @@ public class MovidicSC : LivingEntity
             Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, 1 << LayerMask.NameToLayer("DEFENSIVEGOODS"));
 
             if (colliders.Length >= 1)
-                targetEntity = colliders[0].gameObject;
+            {
+                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                {
+                    if (colliders[0].gameObject.CompareTag("FENCE"))
+                    {
+                        targetEntity = colliders[0].gameObject;
+                    }
+                }
+                else
+                    targetEntity = colliders[0].gameObject;
+            }
             else
-                targetEntity = maindoor;
+                targetEntity = startTarget;
 
             yield return new WaitForSeconds(0.1f);
         }

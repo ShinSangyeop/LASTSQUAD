@@ -29,13 +29,13 @@ internal class CursorState
 
         }
     }
-
 }
 
 
 public class PlayerAction : MonoBehaviour
 {
-    private Transform tr; // 플레이어의 Transform
+    private Transform playerTr; // 플레이어의 Transform
+    private PlayerCtrl playerCtrl; // 플레이어 Ctrl 스크립트
 
     ///<summary>
     /// CameraRaycast Script
@@ -147,7 +147,8 @@ public class PlayerAction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tr = GetComponent<Transform>();
+        playerTr = transform.parent.GetComponent<Transform>();
+        playerCtrl = playerTr.GetComponent<PlayerCtrl>();
         cameraRaycast = GetComponent<CameraRaycast>();
 
         isBuild = false;
@@ -166,22 +167,35 @@ public class PlayerAction : MonoBehaviour
 
         CursorState.CursorLockedSetting(true);
 
+        LayerMask blueprint = LayerMask.NameToLayer("BLUEPRINT");
         LayerMask enemyLayer = LayerMask.NameToLayer("ENEMY");
         LayerMask defensiveGoodsLayer = LayerMask.NameToLayer("DEFENSIVEGOODS");
         LayerMask storeLayer = LayerMask.NameToLayer("STORE");
         LayerMask playerLayer = LayerMask.NameToLayer("PLAYER");
-        LayerMask mainDoorLayer = LayerMask.NameToLayer("MAINDOOR");
+        LayerMask bunkerDoorLayer = LayerMask.NameToLayer("BUNKERDOOR");
         LayerMask wallLayer = LayerMask.NameToLayer("WALL");
 
-        allLayerMask = (1 << enemyLayer) | (1 << defensiveGoodsLayer) | (1 << storeLayer) | (1 << playerLayer) | (1 << mainDoorLayer) | (1 << wallLayer);
+        allLayerMask = (1 << blueprint) | (1 << enemyLayer) | (1 << defensiveGoodsLayer) | (1 << storeLayer) | (1 << playerLayer) | (1 << bunkerDoorLayer) | (1 << wallLayer);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        CheckLooking();
-        Action();
+        if (playerCtrl.isUIOpen == false)
+        {
+            CheckLooking();
+            Action();
+        }
+        else
+        {
+            if (targetInfoPanel.activeSelf == true)
+            {
+                targetInfoPanel.SetActive(false);
+            }
+        }
+
+
     }
 
 
@@ -226,13 +240,12 @@ public class PlayerAction : MonoBehaviour
         //Debug.Log(target);
 
         // 방어 물자가 건설되어 있지 않은 상태이면 건설할 수 있다고 표시해주어야 한다.
-        if (targetTag == "DEFENSIVEGOODS")
+        if (targetTag == "BLUEPRINT")
         {
             // 각각의 상황에 따로 SetActive를 처리하는 이유는 Raycast를 통해서 무언가를 비추고는 있는데
             // 내가 원하는 타겟이 아닌 경우가 있기 때문에 원하는 타겟일 경우에만 표시하도록 처리한 것.
             if (targetInfoPanel.activeSelf == false) { targetInfoPanel.SetActive(true); }
 
-<<<<<<< HEAD
 
             bool canBuild = !target.GetComponent<Blueprint>().isBuild;
 
@@ -336,19 +349,7 @@ public class PlayerAction : MonoBehaviour
                 }
             }
         }
-=======
-            targetInfoText.text = TargetInfoTextSetting(targetTag);
-            // 방어물자가 건설되어 있지 않은 상태이면 건설할 수 있다고 표시
-            // 건설된 상태이면? 수리 가능한 상황일 경우 따로 표시를 해서 수리 진행하게 처리.
-            //Debug.Log("Defensive Goods State");
 
-            // 건설할 수 있는 상황이면
-            //if(canBuild && FillGauge(buildTime)){ // Build 과정 진행 }
-            // 수리할 수 있는 상황이면
-            //else if(canRepair && FillGauge(repairTime)){ // 수리 과정 진행 }
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
-
-        }
         // 상점에 다가가면 상점이라고 표시가 뜨고 키를 누르면 상점이 열린다.
         else if (targetTag == "STORE" && Vector3.Distance(this.transform.position, target.transform.position) <= 5f)
         {
@@ -356,16 +357,12 @@ public class PlayerAction : MonoBehaviour
             targetInfoText.text = TargetInfoTextSetting(targetTag);
             if (Input.GetKeyDown(KeyCode.E))
             {
-<<<<<<< HEAD
                 // Modify
                 // OpenStore에서 열렸나 안열렸나로 반환값을 주는데 이때
                 // 결과값을 이용해서 현재 동작에 대한 결과를 UI에 텍스트로 표시해주는 것이 필요한 것 같다.
                 // 대부분의 동작에 UI로 표시해주는 과정이 있으면 보기 편하다.
 
                 target.GetComponent<Store>().OpenStore(playerTr);
-=======
-                Debug.Log("Store Open");
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
             }
         }
         // 플레이어에게 다가가면 플레이어의 이름이 표시된다.
@@ -411,7 +408,6 @@ public class PlayerAction : MonoBehaviour
         // 보고있는 대상은 있는데 그 대상이 내가 원하는 대상이 아닐 경우 정보 표시가 필요없다.
         else
         {
-<<<<<<< HEAD
             // 보고 있는 대상이 없는데 체력이 최대 체력보다 낮을 경우
             // 회복 아이템이 있는 경우
             if (playerCtrl.haveMedikit && playerCtrl.currHP < playerCtrl.maxHp)
@@ -441,12 +437,12 @@ public class PlayerAction : MonoBehaviour
 
             }
             else
-=======
-            GaugeClear();
-            if (targetInfoPanel.activeSelf == true)
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
             {
-                targetInfoPanel.SetActive(false);
+                GaugeClear();
+                if (targetInfoPanel.activeSelf == true)
+                {
+                    targetInfoPanel.SetActive(false);
+                }
             }
         }
 
@@ -508,9 +504,6 @@ public class PlayerAction : MonoBehaviour
     }
     #endregion
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 }

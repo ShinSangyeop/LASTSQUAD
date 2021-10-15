@@ -607,7 +607,26 @@ public class DBManager : MonoBehaviour
     #endregion
 
     #region DefensiveStructure
+    public Dictionary<string, string> GetDefInfo(string _defUID)
+    {
+        //string jsonString = File.ReadAllText(Application.dataPath + resourcePath + jsonPath + weaponPath + _weaponUID.ToString() + ".json");
+        string jsonString = File.ReadAllText(streamingAssetPath + jsonPath + defensiveStructurePath + _defUID.ToString() + ".json");
 
+
+        JsonData defData = JsonMapper.ToObject(jsonString);
+
+        //Debug.Log(weaponData["Weapon_UID"].ToString());
+
+        Dictionary<string, string> _defDict = new Dictionary<string, string>();
+
+        _defDict.Add("Defensive_UID", defData["Defensive_UID"].ToString());
+        _defDict.Add("Defensive_Name", defData["Defensive_Name"].ToString());
+        _defDict.Add("Defensive_Hp", defData["Defensive_Hp"].ToString());
+        _defDict.Add("Defensive_Damage", defData["Defensive_Damage"].ToString());
+        _defDict.Add("Defensive_Passable", defData["Defensive_Passable"].ToString());
+
+        return _defDict;
+    }
 
 
     /// <summary>

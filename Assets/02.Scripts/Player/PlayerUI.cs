@@ -50,7 +50,6 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
 
     Coroutine coUIUpdate;
 
-<<<<<<< HEAD
     public Text pointText; // 보유 포인트 텍스트
 
     public Image expImage; // 플레이어 경험치 이미지
@@ -59,14 +58,6 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
 
     #region Player Skill
     [Header("Player SKill")]
-=======
-    #endregion
-
-    #region Player Skill
-
-
-
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     // 스킬 포인트를 가지고 있다는 것을 알려주는 오브젝트
     public GameObject skillPointInfoObj;
     public bool havingSkillPoint_isRunning = false;
@@ -84,7 +75,6 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
 
     #endregion
 
-<<<<<<< HEAD
     #region Player Item UI
     [Header("Player Item UI")]
     // 아이템이 있을 때 활성화 되는 Panel
@@ -109,8 +99,6 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
     [Header("Menu UI")]
     public Image menuPanel;
     #endregion
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
     private void Start()
     {
@@ -154,7 +142,7 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
                 CursorState.CursorLockedSetting(false); // 커서 고정을 끈다.
                 skillSelectObj.SetActive(true);
             }
-            else if (skillSelectObj.activeSelf == true)
+            else if (skillSelectObj.activeSelf == true && playerCtrl.isUIOpen == false)
             {
                 //Cursor.lockState = CursorLockMode.Locked; // 커서를 고정한다.
                 CursorState.CursorLockedSetting(true); // 커서를 고정한다.
@@ -165,6 +153,7 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
         }
     }
 
+    #region Skill Point UI
 
     /// <summary>
     /// 스킬 포인트를 가지고 있을 경우 Level 표시 근처에 켜졌다 꺼졌다하는 표시 갱신 코루틴. 
@@ -204,8 +193,9 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
 
         //Debug.Log($"Skill Point: Done");
     }
+    #endregion
 
-
+    #region Status UI 
     /// <summary>
     /// 스탯 UI를 활성화하고 갱신하는 코루틴
     /// </summary>
@@ -242,17 +232,17 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
                 levelText.text = $"{playerCtrl.level.ToString()}";
                 armourText.text = $"{playerCtrl.addArmour.ToString()}";
                 weaponText.text = $"{weaponManager.weaponNameText.text.ToString()}";
-                damageText.text = $"{(weaponManager.currGun.damage + playerCtrl.addAttack).ToString()}";
-                attackSpeedText.text = $"{weaponManager.currGun.fireDelay.ToString()}";
-                healingPointText.text = $"{playerAction.currHealingPoint.ToString()}";
-                healingSpeedText.text = $"{playerAction.currHealingSpeed.ToString()}";
-                repairSpeedText.text = $"{playerAction.currRepariSpeed.ToString()}";
-                buildSpeedText.text = $"{playerAction.currBuildSpeed.ToString()}";
+                damageText.text = $"{(weaponManager.currGun.damage + playerCtrl.addAttack).ToString("F2")}";
+                attackSpeedText.text = $"{weaponManager.currGun.fireDelay.ToString("F2")}";
+                healingPointText.text = $"{playerAction.currHealingPoint.ToString("F2")}";
+                healingSpeedText.text = $"{playerAction.currHealingSpeed.ToString("F2")}";
+                repairSpeedText.text = $"{playerAction.currRepariSpeed.ToString("F2")}";
+                buildSpeedText.text = $"{playerAction.currBuildSpeed.ToString("F2")}";
 
                 string autoRepair = playerAction.buildingAutoRepair ? "보유" : "미보유";
 
                 autoRepairText.text = $"{autoRepair.ToString()}";
-
+                pointText.text = $"{playerCtrl._point.ToString()}";
             }
             catch (System.Exception e)
             {
@@ -267,7 +257,6 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
         yield break;
     }
 
-<<<<<<< HEAD
 
     public void ExpUISetting()
     {
@@ -276,64 +265,106 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
 
 
     #endregion
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
     #region Button 기능
 
-
     public void OnPointerClick(UnityEngine.EventSystems.PointerEventData eventData)
     {
-        // 스킬 포인트를 1감소 시킨다.
-        playerCtrl.skillPoint -= 1;
-
-        // 스킬 레벨을 올릴 것이므로 스킬 세팅이 되었는가를 false로 변경한다.
-        playerSkillManager.skillSettingComplete = false;
+        bool select = false;
 
         //Debug.Log("____Press Event: " + eventData.pointerCurrentRaycast.ToString());
-        if (eventData.pointerCurrentRaycast.gameObject.name.ToString() == skillInfo_ObjList[0].name)
+        if (eventData.pointerCurrentRaycast.gameObject == skillInfo_ObjList[0])
         {
+            // 스킬 포인트를 1감소 시킨다.
+            playerCtrl.skillPoint -= 1;
+            // 스킬 레벨을 올릴 것이므로 스킬 세팅이 되었는가를 false로 변경한다.
+            playerSkillManager.skillSettingComplete = false;
             //Debug.Log("____ GameObject : " + eventData.pointerCurrentRaycast.ToString());
-
             playerCtrl.SkillLevelUp(playerCtrl._select_SkillList[0]);
-        }
-        else if (eventData.pointerCurrentRaycast.gameObject.name.ToString() == skillInfo_ObjList[1].name.ToString())
-        {
-            //Debug.Log("____ GameObject : " + eventData.pointerCurrentRaycast.ToString());
 
+            select = true;
+        }
+        else if (eventData.pointerCurrentRaycast.gameObject == skillInfo_ObjList[1])
+        {
+            // 스킬 포인트를 1감소 시킨다.
+            playerCtrl.skillPoint -= 1;
+            // 스킬 레벨을 올릴 것이므로 스킬 세팅이 되었는가를 false로 변경한다.
+            playerSkillManager.skillSettingComplete = false;
+            //Debug.Log("____ GameObject : " + eventData.pointerCurrentRaycast.ToString());
             playerCtrl.SkillLevelUp(playerCtrl._select_SkillList[1]);
+
+            select = true;
         }
-        else if (eventData.pointerCurrentRaycast.gameObject.name.ToString() == skillInfo_ObjList[2].name.ToString())
+        else if (eventData.pointerCurrentRaycast.gameObject == skillInfo_ObjList[2])
         {
+            // 스킬 포인트를 1감소 시킨다.
+            playerCtrl.skillPoint -= 1;
+            // 스킬 레벨을 올릴 것이므로 스킬 세팅이 되었는가를 false로 변경한다.
+            playerSkillManager.skillSettingComplete = false;
             //Debug.Log("____ GameObject : " + eventData.pointerCurrentRaycast.ToString());
-
             playerCtrl.SkillLevelUp(playerCtrl._select_SkillList[2]);
+
+            select = true;
         }
 
-        // 레벨을 올릴 스킬을 선택했으므로 스킬 선택 창을 끈다.
-        skillSelectObj.SetActive(false);
-        // 스킬 창을 껐으므로 커서를 중앙에 다시 고정시킨다.
-        // 스킬 포인트가 없어서 스킬 획득 창이 더 표시가 되지 않을 경우에만 동작한다.
-        if (playerCtrl.skillPoint <= 0)
+        if (select)
         {
-            CursorState.CursorLockedSetting(true);
+            // 레벨을 올릴 스킬을 선택했으므로 스킬 선택 창을 끈다.
+            skillSelectObj.SetActive(false);
+
+            // 스킬 창을 껐으므로 커서를 중앙에 다시 고정시킨다.
+            // 스킬 포인트가 없어서 스킬 획득 창이 더 표시가 되지 않을 경우에만 동작한다.
+            if (playerCtrl.skillPoint <= 0)
+            {
+                if (playerCtrl.isUIOpen == false)
+                {
+                    CursorState.CursorLockedSetting(true);
+                }
+            }
         }
 
     }
 
-<<<<<<< HEAD
     #endregion
 
     #region Item UI
     public void ItemUISetting(int _lastUID)
     {
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
-    #endregion
+        if (playerCtrl.isHaveItem == true)
+        {
+            // Item Panel active
+            itemPanel.gameObject.SetActive(true);
+
+            if (playerCtrl.haveMedikit == true)
+            {
+                // Medikit Image acitve
+                itemImg.sprite = Resources.Load<Sprite>("Store/ItemImage/MedikitImg");
+            }
+            else if (playerCtrl.haveDefStruct == true)
+            {
+                // DefStruct Image active
+                // 철책
+                if (_lastUID == 0)
+                {
+                    // Iron Fence image active
+                    itemImg.sprite = Resources.Load<Sprite>("Store/DefensiveStructureImage/Fence");
+                }
+                // 철조망
+                else if (_lastUID == 1)
+                {
+                    // Barbed Wire image active
+                    itemImg.sprite = Resources.Load<Sprite>("Store/DefensiveStructureImage/BarbedWire");
+                }
+            }
+        }
+        else
+        {
+            // Item Panel inactive
+            itemPanel.gameObject.SetActive(false);
+        }
 
 
-<<<<<<< HEAD
     }
     #endregion
 
@@ -370,8 +401,6 @@ public class PlayerUI : MonoBehaviour, UnityEngine.EventSystems.IPointerClickHan
 
     #endregion 
 
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
 
 }

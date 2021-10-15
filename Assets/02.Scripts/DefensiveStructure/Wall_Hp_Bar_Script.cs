@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Wall_Hp_Bar_Script : MonoBehaviour
 {
-    Camera cam;//Ä«¸Ş¶ó º¯¼ö
-    Canvas can;//Äµ¹ö½º º¯¼ö
-    RectTransform rectParent;//ºÎ¸ğÀÇ rectTransform º¯¼ö
-    RectTransform rect;//ÀÚ½ÅÀÇ rectTransform º¯¼ö
+    Camera cam;//ì¹´ë©”ë¼ ë³€ìˆ˜
+    Canvas can;//ìº”ë²„ìŠ¤ ë³€ìˆ˜
+    RectTransform rectParent;//ë¶€ëª¨ì˜ rectTransform ë³€ìˆ˜
+    RectTransform rect;//ìì‹ ì˜ rectTransform ë³€ìˆ˜
 
-    public Vector3 offset = Vector3.zero;//Hp¹Ù À§Ä¡ Á¶Àı
-    public Transform wall;//¹æ¾î¹°ÀÚ À§Ä¡
+    public Vector3 offset = Vector3.zero;//Hpë°” ìœ„ì¹˜ ì¡°ì ˆ
+    public Transform wall;//ë°©ì–´ë¬¼ì ìœ„ì¹˜
 
     // Start is called before the first frame update
     void Start()

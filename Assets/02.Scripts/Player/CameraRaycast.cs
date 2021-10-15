@@ -30,31 +30,29 @@ public class CameraRaycast : MonoBehaviour
     /// <returns>Return target RaycastHit<br/>If target is Empty return null </returns>
     /// 매개변수에 Raycast 대상이 될 LayerMask도 같이 받아서 처리해야겠다.
     /// 그래야지 철책뒤의 적에 대해서 인식을 할 수 있을 것이다.
-    public RaycastHit GetRaycastTarget(float _raycastRange, LayerMask targerLayerMasks)
+    public RaycastHit GetRaycastTarget(float _raycastRange, LayerMask targetLayerMasks)
     {
         RaycastHit hit;
 
-        if(Physics.Raycast(transform.position, transform.forward, out hit, _raycastRange, targerLayerMasks))
+        //Vector3 mousePos = Input.mousePosition;
+        //Camera camera = GetComponent<Camera>();
+        //mousePos.z = camera.farClipPlane; // 카메라가 보는 방향과 시야를 가져온다.
+        //Vector3 dir = camera.ScreenToWorldPoint(mousePos);
+
+        // 마우스를 고정 시켜도 마우스 위치랑 카메라 정면이랑 동일히자 않다.
+        //if (Physics.Raycast(transform.position, dir, out hit, _raycastRange, targerLayerMasks))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, _raycastRange, targetLayerMasks))
         {
-<<<<<<< HEAD
             //Debug.Log("Hit Object: " + hit.transform.gameObject.name.ToString());
 
             //Debug.Log(target.tag);
         }
 
-=======
-            //target = hit.transform.gameObject;
-            //Debug.Log(target.tag);
-        }
-
-        //Debug.Log(hit.point);
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
         return hit;
     }
 
 
-<<<<<<< HEAD
     public List<RaycastHit> GetWeaponRaycastTarget(float _raycastRange, LayerMask targetLayerMasks, ItemGun.GunType _gunType)
     {
         List<RaycastHit> _returnHit = new List<RaycastHit>();
@@ -112,7 +110,5 @@ public class CameraRaycast : MonoBehaviour
 
         return _returnHit;
     }
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1676368307}
   m_Layer: 30
   m_Name: Fence
-  m_TagString: Untagged
+  m_TagString: BLUEPRINT
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,11 +42,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1314401280508169715}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.2, y: 2.3, z: 0.5}
-  m_Center: {x: 0, y: 1, z: -0.1}
+  m_Size: {x: 2.87, y: 2.12, z: 0.5}
+  m_Center: {x: 0, y: 1.05, z: -0.1}
 --- !u!114 &1676368307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,8 +74,16 @@ PrefabInstance:
       value: chainlink_single
       objectReference: {fileID: 0}
     - target: {fileID: 3679880986918513423, guid: 2d2bd88cd1c9ab54a8ffe8e44bc7f993, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679880986918513423, guid: 2d2bd88cd1c9ab54a8ffe8e44bc7f993, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3679880986918513423, guid: 2d2bd88cd1c9ab54a8ffe8e44bc7f993, type: 3}
+      propertyPath: m_TagString
+      value: FENCE
       objectReference: {fileID: 0}
     - target: {fileID: 3680036569754878828, guid: 2d2bd88cd1c9ab54a8ffe8e44bc7f993, type: 3}
       propertyPath: build_fence

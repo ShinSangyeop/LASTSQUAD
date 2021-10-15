@@ -205,7 +205,7 @@ public class FindSkill
     /// <returns>Return skill Information to float List</returns>
     public static List<float> GetSkillInfo(string _skillName)
     {
-        Debug.Log("____FIND SKILL____");
+        //Debug.Log("____FIND SKILL____");
 
         // Skill class를 Type으로 받아온다.
         System.Type tp = typeof(Skill);
@@ -225,7 +225,7 @@ public class FindSkill
         //    Debug.Log(_skillName + "(" + _skillLevel + ") :" + __skill);
         //}
 
-        Debug.Log("____END SKILL____");
+        //Debug.Log("____END SKILL____");
 
         return (List<float>)skillObj;
     }

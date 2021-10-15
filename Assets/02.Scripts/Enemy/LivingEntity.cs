@@ -20,27 +20,25 @@ public class LivingEntity : MonoBehaviour, IAttack, IDamaged
     public bool dead;
     public eCharacterState state;
 
-<<<<<<< HEAD
     public GameObject startTarget;
 
     protected float _exp;
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
     //public event Action OnDeath;
     protected virtual void OnEnable()  // 클래스가 생성될때 리셋되는 상태
     {
         down = false;
         dead = false;  // 사망상태가 아님
         currHP = startHp; // 현재 체력은 시작 체력이랑 같음
-<<<<<<< HEAD
+        this.GetComponent<Collider>().enabled = true;
+        StartCoroutine(FindBunker());
+        state = eCharacterState.Trace;
 
-        if (!this.gameObject.CompareTag("BUNKERDOOR"))
-            startTarget = GameManager.instance.bunkerDoor.gameObject;
+    }
 
-
-
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
+    IEnumerator FindBunker()
+    {
+        while (GameManager.instance.bunkerDoor == null) { yield return null; }
+        startTarget = GameManager.instance.bunkerDoor.gameObject;
     }
 
     public void Attack()  // 공격시 실행될 함수
@@ -75,13 +73,31 @@ public class LivingEntity : MonoBehaviour, IAttack, IDamaged
 
         dead = true;  // 상태를 사망으로
         // 제거하든 disable처리하든
-        Destroy(this.gameObject, 5f);
-    }
+        if (SpwanManager.Instance.enemies.Contains(this))
+        {
+            SpwanManager.Instance.totalCount -= 1;
+            SpwanManager.Instance.enemies.Remove(this);
+        }
 
-    public void OnDeath()
+        //Destroy(this.gameObject, 5f);
+        ObjectPooling.ReturnObject(gameObject);
+
+
+    }
+    public virtual void OnDeath()
     {
         // 사망 애니매이션 실행
         state = eCharacterState.Die;
+        this.GetComponent<Collider>().enabled = false;
         dead = true;
     }
+
+    protected virtual IEnumerator WaitForDieAnimation(float _animTime)
+    {
+        yield return new WaitForSeconds(_animTime);
+
+        Die();
+    }
+
+
 }

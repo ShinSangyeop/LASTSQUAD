@@ -9,9 +9,9 @@ public class Hp_Bar : MonoBehaviour
     public float maxhp;
 
 
-    public Slider hp_fillamount;//hp ½½¶óÀÌ´õ ¹Ù
-    public Text hp_percent;//hp¹Ù ³²Àº ÆÛ¼¾Å×ÀÌÁö ÅØ½ºÆ®
-    public Text hp_function;//hp¹Ù ¾Ë¸² ÅØ½ºÆ®
+    public Slider hp_fillamount;//hp ìŠ¬ë¼ì´ë” ë°”
+    public Text hp_percent;//hpë°” ë‚¨ì€ í¼ì„¼í…Œì´ì§€ í…ìŠ¤íŠ¸
+    public Text hp_function;//hpë°” ì•Œë¦¼ í…ìŠ¤íŠ¸
     //Transform cam;
 
 
@@ -43,15 +43,15 @@ public class Hp_Bar : MonoBehaviour
         }
         else if ((maxhp * 30 / 100) <= hp)
         {
-            hp_function.text = "¼ö¸® ÇÊ¿ä";
+            hp_function.text = "ìˆ˜ë¦¬ í•„ìš”";
         }
         else if ((maxhp * 10 / 100) <= hp)
         {
-            hp_function.text = "¼ö¸® ÇÊ¿ä!!";
+            hp_function.text = "ìˆ˜ë¦¬ í•„ìš”!!";
         }
         else if ((maxhp * 0 / 100) <= hp)
         {
-            hp_function.text = "¼ö¸® ÇÊ¿ä!!!!!";
+            hp_function.text = "ìˆ˜ë¦¬ í•„ìš”!!!!!";
         }
 
         if (IsRepair == true)

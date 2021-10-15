@@ -136,4 +136,15 @@ public class ButtonCtrl : MonoBehaviour
     }
 
 
+    public void OnKeyInformationOpenButtonClick()
+    {
+        transform.Find("KeyInfoPanel").gameObject.SetActive(true);
+    }
+
+    public void OnKeyInformationExitButtonClick()
+    {
+        transform.Find("KeyInfoPanel").gameObject.SetActive(false);
+    }
+
+
 }

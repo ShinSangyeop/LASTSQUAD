@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using InterfaceSet;
 
-public class Wall_script : MonoBehaviour
+public class Wall_script : MonoBehaviour, IDamaged
 {
     public GameObject Hp_Ui;
     public Hp_Bar hp_bar;
@@ -49,24 +50,28 @@ public class Wall_script : MonoBehaviour
         hp_bar.hp_function.text = "";
         build_fence.GetComponent<BoxCollider>().isTrigger = true;
     }
-    void OnCollisionEnter(Collision collision)
-    {
-        //if (collision.collider.CompareTag("PLAYER"))//구조물에 부딪혔을 때
-        //{
-        //Move_able pl = collision.gameObject.GetComponent<Move_able>();
-        //Debug.Log("___Collision___");//부딪힘을 인식
-        //}
-        if (collision.collider.CompareTag("ENEMY"))//적에게 대미지를 입엇을때
-        {
-           //hp_bar.hp -= enemy.damage;//적의 공격력만큼 체력이 깎인다.
-           // Debug.Log("___Shoot___ : " + enemy.damage);//적의 공격 대미지
-           // Debug.Log("___Wall_hp___ : " + hp_bar.hp);//구조물의 남은 체력
 
-            hp_bar.Need_Repair();
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    //if (collision.collider.CompareTag("PLAYER"))//구조물에 부딪혔을 때
+    //    //{
+    //    //Move_able pl = collision.gameObject.GetComponent<Move_able>();
+    //    //Debug.Log("___Collision___");//부딪힘을 인식
+    //    //}
+    //    if (collision.collider.CompareTag("ENEMY"))//적에게 대미지를 입엇을때
+    //    {
+    //        Bullet_Script enemy = collision.gameObject.GetComponent<Bullet_Script>();
+    //        hp_bar.hp -= enemy.damage;//적의 공격력만큼 체력이 깎인다.
+    //        Debug.Log("___Shoot___ : " + enemy.damage);//적의 공격 대미지
+    //        Debug.Log("___Wall_hp___ : " + hp_bar.hp);//구조물의 남은 체력
 
-            Die();
-        }
-    }
+    //        hp_bar.Need_Repair();
+
+    //        Die();
+    //    }
+    //}
+
+
     private void Update()
     {
         Ray();
@@ -101,7 +106,6 @@ public class Wall_script : MonoBehaviour
             build_fence.BuildingDestroy();
         }
     }
-<<<<<<< HEAD
 
     public float Damaged(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
@@ -113,6 +117,4 @@ public class Wall_script : MonoBehaviour
         }
         return 0;
     }
-=======
->>>>>>> parent of 21a53d0 (20211012_enemy수정)
 }

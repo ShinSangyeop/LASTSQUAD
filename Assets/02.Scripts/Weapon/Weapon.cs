@@ -12,8 +12,6 @@ public class Weapon : MonoBehaviour
     public int carryBullet = 0; // 현재 가지고 있는 총알 수
     public int maxCarryBullet = 0; // 최대 가지고 있을 수 있는 총알 수
 
-    public int MaxCarryBullet { get; set; }
-
     public float damage = 0f; // 무기 데미지
     public float reloadTime = 0f; // 재장전 시간
     public float attackDistance = 0f; // 무기 공격 사거리
