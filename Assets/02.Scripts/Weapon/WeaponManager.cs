@@ -324,7 +324,7 @@ public class WeaponManager : MonoBehaviour
                 if (dontUseBullet)
                 {
                     percent = UnityEngine.Random.Range(0, 100);
-                    Debug.Log("____Percent: " + percent + "____");
+                    //Debug.Log("____Percent: " + percent + "____");
                 }
                 if (!(percent >= (100 - dontUseBulletPercent)))
                 {
@@ -333,7 +333,7 @@ public class WeaponManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("___Bullet Dont Use!!____");
+                    //Debug.Log("___Bullet Dont Use!!____");
                 }
 
                 // 발사 이펙트 생성

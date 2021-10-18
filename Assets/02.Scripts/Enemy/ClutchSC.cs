@@ -21,7 +21,7 @@ public class ClutchSC : LivingEntity
     private bool isBleed = false;
 
     Coroutine co_updatePath;
-    Coroutine co_chageTarget;
+    Coroutine co_changeTarget;
 
     List<GameObject> list = new List<GameObject>();
 
@@ -45,7 +45,14 @@ public class ClutchSC : LivingEntity
 
     protected override void OnEnable()
     {
+        pathFinder.enabled = true;
         base.OnEnable();
+        NowTrace();
+        co_updatePath = StartCoroutine(UpdatePath());
+        co_changeTarget = StartCoroutine(ChangeTarget());
+        targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
+        targetSize = targetEntity.GetComponent<Collider>().bounds.size;
+
     }
 
     public void Setup(float newHP = 100f, float newAP = 5f, float newSpeed = 6f, float newDamage = 9f)
@@ -91,9 +98,7 @@ public class ClutchSC : LivingEntity
     }
     void Start()
     {
-        NowTrace();
-        co_updatePath = StartCoroutine(UpdatePath());
-        co_chageTarget = StartCoroutine(ChangeTarget());
+
     }
 
     void Update()
@@ -145,7 +150,7 @@ public class ClutchSC : LivingEntity
             else
                 return;
         }
-        if (other.CompareTag("MAINDOOR") || other.CompareTag("DEFENSIVEGOODS"))
+        else if (other.CompareTag("BUNKERDOOR") || other.CompareTag("FENCE"))
         {
             if (!list.Contains(other.gameObject))
             {
@@ -220,8 +225,8 @@ public class ClutchSC : LivingEntity
             if (pathFinder.enabled)
             {
                 pathFinder.isStopped = false;
-                Vector3 targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
-                Vector3 targetSize = targetEntity.GetComponent<Collider>().bounds.size;
+                targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
+                targetSize = targetEntity.GetComponent<Collider>().bounds.size;
                 pathFinder.SetDestination(new Vector3(targetPosition.x, (targetPosition.y - (targetSize.y / 2)), targetPosition.z));
                 //Debug.Log($"Position {new Vector3(targetPosition.x, (targetPosition.y - (targetSize.y / 2)), targetPosition.z)}");
             }
@@ -237,22 +242,54 @@ public class ClutchSC : LivingEntity
     {
         while (!dead)
         {
-            Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, 1 << LayerMask.NameToLayer("PLAYER") | 1 << LayerMask.NameToLayer("MAINDOOR"));
+            Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, targetLayer);
+
 
             if (colliders.Length >= 1)
             {
-                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                int targetValue = 5;
+                foreach (var collider in colliders)
                 {
-                    if (colliders[0].gameObject.CompareTag("FENCE"))
+                    // targetValue = 0
+                    if (collider.CompareTag("PLAYER"))
                     {
-                        targetEntity = colliders[0].gameObject;
+                        targetValue = 0;
+                        targetEntity = collider.gameObject;
+                        break;
                     }
+                    // targetValue = 1 
+                    else if (collider.CompareTag("FENCE") && targetValue > 1)
+                    {
+                        targetValue = 1;
+                        targetEntity = collider.gameObject;
+                    }
+                    // targetValue = 2
+                    else if (collider.CompareTag("BUNKERDOOR") && targetValue > 2)
+                    {
+                        targetValue = 2;
+                        targetEntity = collider.gameObject;
+                    }
+
                 }
-                else
-                    targetEntity = colliders[0].gameObject;
+
+                //if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                //{
+                //    if (colliders[0].gameObject.CompareTag("FENCE"))
+                //    {
+                //        targetEntity = colliders[0].gameObject;
+                //    }
+                //}
+                //else
+                //    targetEntity = colliders[0].gameObject;
             }
             else
                 targetEntity = startTarget;
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, attackDistance, 1 << LayerMask.NameToLayer("DEFENSIVEGOODS")))
+            {
+                if (hit.collider.CompareTag("FENCE")) { targetEntity = hit.collider.gameObject; }
+            }
 
             yield return new WaitForSeconds(0.1f);
         }
@@ -306,6 +343,7 @@ public class ClutchSC : LivingEntity
         pathFinder.enabled = false;
         enemyAnimator.SetTrigger("IsDead");
         Debug.Log(MoveDuration(eCharacterState.Die));
-        Die();
+
+        StartCoroutine(WaitForDieAnimation(MoveDuration(eCharacterState.Die)));
     }
 }

@@ -44,6 +44,17 @@ public class MovidicSC : LivingEntity
         _exp = 4f;
     }
 
+    protected override void OnEnable()
+    {
+        pathFinder.enabled = true;
+        base.OnEnable();
+        NowTrace();
+        co_updatePath = StartCoroutine(UpdatePath());
+        co_changeTarget = StartCoroutine(ChangeTarget());
+        targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
+        targetSize = targetEntity.GetComponent<Collider>().bounds.size;
+    }
+
     public void Setup(float newHp = 300f, float newAP = 5f, float newSpeed = 2f, float newDamage = 20f)
     {
         startHp = newHp;
@@ -87,11 +98,7 @@ public class MovidicSC : LivingEntity
     }
     void Start()
     {
-        NowTrace();
-        co_updatePath = StartCoroutine(UpdatePath());
-        co_changeTarget = StartCoroutine(ChangeTarget());
-        targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
-        targetSize = targetEntity.GetComponent<Collider>().bounds.size;
+
     }
 
     void Update()
@@ -119,7 +126,7 @@ public class MovidicSC : LivingEntity
             }
         }
 
-        if (isAttacking == true)
+        if (isAttacking == true || isRush == true)
         {
             Quaternion LookRot = Quaternion.LookRotation(new Vector3(targetPosition.x, (targetPosition.y - (targetSize.y / 2)), targetPosition.z) - new Vector3(this.transform.position.x, 0, this.transform.position.z));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, LookRot, 60f * Time.deltaTime);
@@ -133,7 +140,7 @@ public class MovidicSC : LivingEntity
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("MAINDOOR"))
+        if (other.CompareTag("BUNKERDOOR"))
         {
             if (!list.Contains(other.gameObject))
             {
@@ -149,7 +156,7 @@ public class MovidicSC : LivingEntity
             else
                 return;
         }
-        else if (other.CompareTag("DEFENSIVEGOODS"))
+        else if (other.CompareTag("FENCE"))
         {
             if (!list.Contains(other.gameObject))
             {
@@ -209,16 +216,35 @@ public class MovidicSC : LivingEntity
         float attackdelayTime = MoveDuration(eCharacterState.Attack);
         StartCoroutine(EndAttacking(attackdelayTime));
 
-        Debug.Log(MoveDuration(eCharacterState.Attack));
+        //Debug.Log(MoveDuration(eCharacterState.Attack));
     }
     /// <summary>
     /// 돌진 공격 함수
     /// </summary>
     void RushAttack()
     {
+        //Debug.Log("____ Rush Attack ____");
+        StartCoroutine(RushColliderSetting());
         damage = 40f;
-        rigid.AddForce(this.transform.forward * 25f, ForceMode.Impulse);
+        rigid.AddForce(this.transform.forward * 40f, ForceMode.Impulse);
         enemyAnimator.SetTrigger("IsAttack");
+    }
+
+    [SerializeField]
+    Collider bodyCollider1;
+    [SerializeField]
+    Collider bodyCollider2;
+
+    IEnumerator RushColliderSetting()
+    {
+        rigid.isKinematic = false;
+        bodyCollider1.isTrigger = true;
+        bodyCollider2.isTrigger = true;
+        yield return new WaitForSeconds(0.5f);
+        bodyCollider1.isTrigger = false;
+        bodyCollider2.isTrigger = false;
+        rigid.isKinematic = true;
+
     }
 
     public void ClearList()
@@ -254,22 +280,38 @@ public class MovidicSC : LivingEntity
     {
         while (!dead)
         {
-            Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, 1 << LayerMask.NameToLayer("DEFENSIVEGOODS"));
+            //Debug.Log($"____ {transform.position.ToString()} , {transform.forward.ToString()} ____");
 
-            if (colliders.Length >= 1)
+            RaycastHit hit;
+            //Debug.DrawRay(transform.position, transform.forward * 20f, Color.blue, 2f);
+            //if (Physics.Raycast(transform.position, transform.forward, out hit, rushDistance, (1 << LayerMask.NameToLayer("DEFENSIVEGOODS"))))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, rushDistance, (1 << LayerMask.NameToLayer("DEFENSIVEGOODS")) | (1 << LayerMask.NameToLayer("WALL"))))
             {
-                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                Debug.Log("___ TAEGET CHANGE ____");
+
+                if (hit.collider.CompareTag("FENCE"))
                 {
-                    if (colliders[0].gameObject.CompareTag("FENCE"))
-                    {
-                        targetEntity = colliders[0].gameObject;
-                    }
+                    Debug.Log("___ TAEGET Fence ____");
+                    targetEntity = hit.collider.gameObject;
+                    //canRush = true;
                 }
                 else
-                    targetEntity = colliders[0].gameObject;
+                {
+                    targetEntity = startTarget;
+                }
             }
             else
                 targetEntity = startTarget;
+
+            //if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+            //{
+            //    if (colliders[0].gameObject.CompareTag("FENCE"))
+            //    {
+            //        targetEntity = colliders[0].gameObject;
+            //    }
+            //}
+            //else
+            //    targetEntity = colliders[0].gameObject;
 
             yield return new WaitForSeconds(0.1f);
         }
@@ -293,7 +335,7 @@ public class MovidicSC : LivingEntity
         isAttacking = false;
         pathFinder.enabled = true;
         NowTrace();
-        print("=== ATTACK END ===");
+        //print("=== ATTACK END ===");
     }
 
     void ColliderOn()
@@ -307,11 +349,13 @@ public class MovidicSC : LivingEntity
     }
 
     protected override void Down()
+
     {
         base.Down();
         pathFinder.enabled = false;
         enemyAnimator.SetTrigger("IsDead");
         //Debug.Log(MoveDuration(eCharacterState.Die));
-        Die();
+
+        StartCoroutine(WaitForDieAnimation(MoveDuration(eCharacterState.Die)));
     }
 }

@@ -9,11 +9,13 @@ public class Stop : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("MAINDOOR") || other.CompareTag("DEFENSIVEGOODS"))
+        if (other.CompareTag("BUNKERDOOR") || other.CompareTag("FENCE"))
         {
             rigid.velocity = Vector3.zero;
             // 러쉬 중일때 돌진 불 값 체크
             movidic.isRush = false;
+            transform.parent.GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = true;
+
         }
     }
 }

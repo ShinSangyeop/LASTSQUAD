@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SpwanManager : MonoBehaviour
 {
@@ -85,15 +86,16 @@ public class SpwanManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         while (true)
         {
-
             int idx = UnityEngine.Random.Range(2, 8);
             idx += (UnityEngine.Random.Range(0, 3) * 7);
 
-            Debug.Log("____ Total Count: " + totalCount + " ____");
+
+            //Debug.Log("____ Total Count: " + totalCount + " ____");
 
             if (enemies.Count < 15 && enemies.Count < totalCount)
             {
-                int selectEnemy = UnityEngine.Random.Range(0,4);
+                int selectEnemy = UnityEngine.Random.Range(0, 4);
+                float randomSpeed = UnityEngine.Random.Range(-0.2f, 0.2f);
 
                 Monster mob = (Monster)selectEnemy;
 
@@ -108,29 +110,36 @@ public class SpwanManager : MonoBehaviour
                 if (enemyCount[selectEnemy] >= 1)
                 {
                     GameObject obj;
+
                     switch (mob)
                     {
                         case Monster.Zombie:
                             obj = ObjectPooling.GetObject(Monster.Zombie);
                             obj.transform.position = enemyPoints[idx].position;
                             obj.SetActive(true);
+                            obj.GetComponent<NavMeshAgent>().speed += randomSpeed;
 
                             break;
                         case Monster.Spider:
                             obj = ObjectPooling.GetObject(Monster.Spider);
                             obj.transform.position = enemyPoints[idx].position;
                             obj.SetActive(true);
+                            obj.GetComponent<NavMeshAgent>().speed += randomSpeed;
 
                             break;
                         case Monster.Clutch:
                             obj = ObjectPooling.GetObject(Monster.Clutch);
                             obj.transform.position = enemyPoints[idx].position;
                             obj.SetActive(true);
+                            obj.GetComponent<NavMeshAgent>().speed += randomSpeed;
+
                             break;
                         case Monster.Movidic:
                             obj = ObjectPooling.GetObject(Monster.Movidic);
                             obj.transform.position = enemyPoints[idx].position;
                             obj.SetActive(true);
+                            obj.GetComponent<NavMeshAgent>().speed += randomSpeed;
+
                             break;
                         default:
                             obj = null;
@@ -152,7 +161,7 @@ public class SpwanManager : MonoBehaviour
 
             }
 
-            Debug.Log("____ ENEMY COUNT: " + enemies.Count + " ____");
+            //Debug.Log("____ ENEMY COUNT: " + enemies.Count + " ____");
 
 
             yield return new WaitForSeconds(spawnTime);

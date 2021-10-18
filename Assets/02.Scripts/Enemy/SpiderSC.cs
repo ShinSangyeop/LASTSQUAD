@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class SpiderSC : LivingEntity
 {
     public LayerMask target;
+    [SerializeField]
     private GameObject targetEntity;
-    private GameObject targetEnitity;
     public GameObject player;
     public GameObject Bulletobj;
 
@@ -52,7 +52,13 @@ public class SpiderSC : LivingEntity
 
     protected override void OnEnable()
     {
+        pathFinder.enabled = true;
         base.OnEnable();
+        NowTrace();
+        co_updatePath = StartCoroutine(UpdatePath());
+        co_changeTarget = StartCoroutine(ChangeTarget());
+        targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
+        targetSize = targetEntity.GetComponent<Collider>().bounds.size;
     }
     /// <summary>
     /// 초기 스텟 설정
@@ -104,11 +110,6 @@ public class SpiderSC : LivingEntity
     }
     void Start()
     {
-        NowTrace();
-        co_updatePath = StartCoroutine(UpdatePath());
-        co_changeTarget = StartCoroutine(ChangeTarget());
-        targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
-        targetSize = targetEntity.GetComponent<Collider>().bounds.size;
     }
 
 
@@ -124,6 +125,9 @@ public class SpiderSC : LivingEntity
 
         if (isAttacking == true)
         {
+            Debug.Log("____ ROTATION ____");
+            Debug.Log($"Position {targetPosition})");
+
             Quaternion LookRot = Quaternion.LookRotation(new Vector3(targetPosition.x, (targetPosition.y - (targetSize.y / 2)), targetPosition.z) - new Vector3(this.transform.position.x, 0, this.transform.position.z));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, LookRot, 60f * Time.deltaTime);
         }
@@ -175,8 +179,12 @@ public class SpiderSC : LivingEntity
             if (pathFinder.enabled)
             {
                 pathFinder.isStopped = false;
-                pathFinder.SetDestination(targetEntity.transform.position);
+                pathFinder.SetDestination(new Vector3(targetPosition.x, (targetPosition.y - (targetSize.y / 2)), targetPosition.z));
+                //Debug.Log($"Position {new Vector3(targetPosition.x, (targetPosition.y - (targetSize.y / 2)), targetPosition.z)}");
             }
+
+            targetPosition = targetEntity.GetComponent<Collider>().bounds.center;
+            targetSize = targetEntity.GetComponent<Collider>().bounds.size;
 
             yield return new WaitForSeconds(0.1f);
         }
@@ -189,32 +197,55 @@ public class SpiderSC : LivingEntity
     {
         while (!dead)
         {
-            Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, 1 << LayerMask.NameToLayer("PLAYER"));
-
-            try
-            {
-                Debug.Log($"___ TARGET {targetEntity.name} ____");
-            }
-            catch (System.Exception e)
-            {
-
-            }
+            Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, targetLayer);
 
             if (colliders.Length >= 1)
             {
-                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+
+                int targetValue = 5;
+                foreach (var collider in colliders)
                 {
-                    if (colliders[0].gameObject.CompareTag("FENCE"))
+                    // targetValue = 0
+                    if (collider.CompareTag("PLAYER"))
                     {
-                        targetEntity = colliders[0].gameObject;
+                        targetValue = 0;
+                        targetEntity = collider.gameObject;
+                        break;
                     }
+                    //// targetValue = 1 
+                    //else if (collider.CompareTag("FENCE") && targetValue > 1)
+                    //{
+                    //    targetValue = 1;
+                    //    targetEntity = collider.gameObject;
+                    //}
+                    // targetValue = 2
+                    else if (collider.CompareTag("BUNKERDOOR") && targetValue > 2)
+                    {
+                        targetValue = 2;
+                        targetEntity = collider.gameObject;
+                    }
+
                 }
-                else
-                    targetEntity = colliders[0].gameObject;
+
+                //if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                //{
+                //    if (colliders[0].gameObject.CompareTag("FENCE"))
+                //    {
+                //        targetEntity = colliders[0].gameObject;
+                //    }
+                //}
+                //else
+                //    targetEntity = colliders[0].gameObject;
             }
             else
                 targetEntity = startTarget;
-                targetEnitity = startTarget;
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, attackDistance, 1 << LayerMask.NameToLayer("DEFENSIVEGOODS")))
+            {
+
+                if (hit.collider.CompareTag("FENCE")) { targetEntity = hit.collider.gameObject; Debug.Log("____ SPIDER RAYCAST _____"); }
+            }
 
             yield return new WaitForSeconds(0.1f);
         }

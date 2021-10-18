@@ -129,7 +129,6 @@ public class ButtonCtrl : MonoBehaviour
         }
         Debug.Log("____ Loading almost Complete ____");
 
-        GameManager.instance.GameFail();
         yield return null;
         _operation.allowSceneActivation = true;
 

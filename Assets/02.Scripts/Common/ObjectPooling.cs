@@ -130,7 +130,7 @@ public class ObjectPooling : MonoBehaviour
                     return obj;
                 }
             case Monster.Movidic:
-                obj = Instance.poolingObjectSpider.Dequeue();
+                obj = Instance.poolingObjectMovidic.Dequeue();
                 if (obj != null)
                 {
                     //obj.SetActive(true);
@@ -154,7 +154,7 @@ public class ObjectPooling : MonoBehaviour
     /// <param name="zombieSC"></param>
     public static void ReturnObject(GameObject obj)
     {
-        obj.SetActive(false);
+        obj.SetActive(false);   
         obj.transform.SetParent(Instance.transform);
 
         if (obj.name.Contains("Zombie"))

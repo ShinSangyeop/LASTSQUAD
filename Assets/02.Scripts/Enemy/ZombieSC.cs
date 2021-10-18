@@ -25,7 +25,7 @@ public class ZombieSC : LivingEntity
     Coroutine co_updatePath;
     Coroutine co_chageTarget;
 
-
+    [SerializeField]
     List<GameObject> list = new List<GameObject>();
 
     LayerMask targetLayer;
@@ -160,20 +160,62 @@ public class ZombieSC : LivingEntity
             // 오버랩 스피어로 범위내에 있는 PLAYER 레이어 콜라이더 추출
             Collider[] colliders = Physics.OverlapSphere(this.transform.position, traceRange, targetLayer);
 
+            //Debug.Log("____ Colliders ____");
+            //foreach (var target in colliders)
+            //{
+            //    Debug.Log(target.name);
+            //}
+            //Debug.Log("____ End Colliders ____");
+
             if (colliders.Length >= 1)
             {
-                if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+
+                int targetValue = 5;
+                foreach (var collider in colliders)
                 {
-                    if (colliders[0].gameObject.CompareTag("FENCE"))
+                    // targetValue = 0
+                    if (collider.CompareTag("PLAYER"))
                     {
-                        targetEntity = colliders[0].gameObject;
+                        targetValue = 0;
+                        targetEntity = collider.gameObject;
+                        break;
                     }
+                    // targetValue = 1 
+                    else if (collider.CompareTag("FENCE") && targetValue > 1)
+                    {
+                        targetValue = 1;
+                        targetEntity = collider.gameObject;
+                    }
+                    // targetValue = 2
+                    else if (collider.CompareTag("BUNKERDOOR") && targetValue > 2)
+                    {
+                        targetValue = 2;
+                        targetEntity = collider.gameObject;
+                    }
+
                 }
-                else
-                    targetEntity = colliders[0].gameObject;
+
+
+
+                //if (colliders[0].gameObject.layer == LayerMask.NameToLayer("DEFENSIVEGOODS"))
+                //{
+                //    if (colliders[0].gameObject.CompareTag("FENCE"))
+                //    {
+                //        targetEntity = colliders[0].gameObject;
+                //    }
+                //}
+                //else
+                //    targetEntity = colliders[0].gameObject;
             }
             else
                 targetEntity = startTarget;
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, attackDistance, 1 << LayerMask.NameToLayer("DEFENSIVEGOODS")))
+            {
+                if (hit.collider.CompareTag("FENCE")) { targetEntity = hit.collider.gameObject; }
+            }
+
 
             yield return new WaitForSeconds(0.1f);
         }
@@ -203,23 +245,25 @@ public class ZombieSC : LivingEntity
 
                 //Debug.Log("HIT");
             }
-            if (other.CompareTag("BUNKERDOOR") || other.CompareTag("DEFENSIVEGOODS"))
+
+        }
+        else if (other.CompareTag("BUNKERDOOR") || other.CompareTag("FENCE"))
+        {
+            //Debug.Log("____ Target Setting " + other.tag + " ____");
+
+            if (!list.Contains(other.gameObject))
             {
-                if (!list.Contains(other.gameObject))
-                {
-                    list.Add(other.gameObject);
-                    isTrace = false;
+                list.Add(other.gameObject);
+                isTrace = false;
 
-                    Vector3 hitPoint = other.ClosestPoint(gameObject.GetComponent<Collider>().bounds.center);
-                    Vector3 hitNormal = new Vector3(hitPoint.x, hitPoint.y, hitPoint.z).normalized;
+                Vector3 hitPoint = other.ClosestPoint(gameObject.GetComponent<Collider>().bounds.center);
+                Vector3 hitNormal = new Vector3(hitPoint.x, hitPoint.y, hitPoint.z).normalized;
 
-                    other.GetComponent<LivingEntity>().Damaged(damage, hitPoint, hitNormal);
-                }
-                else
-                    return;
-
-
+                other.GetComponent<LivingEntity>().Damaged(damage, hitPoint, hitNormal);
             }
+            else
+                return;
+
         }
     }
     private void OnTriggerExit(Collider other)
@@ -306,7 +350,7 @@ public class ZombieSC : LivingEntity
         base.Down();
         pathFinder.enabled = false;
         enemyAnimator.SetTrigger("IsDead");
-        Debug.Log(MoveDuration(eCharacterState.Die));
+        //Debug.Log(MoveDuration(eCharacterState.Die));
 
         StartCoroutine(WaitForDieAnimation(MoveDuration(eCharacterState.Die)));
 

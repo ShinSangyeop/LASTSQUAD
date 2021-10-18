@@ -14,7 +14,7 @@ public static class ObjectCounting
     {
         List<int> spawnCount = new List<int>();
 
-        zombieSpwanCount += 5;
+        zombieSpwanCount += 3;
         if (_stage >= 3 && _stage % 3 == 0)
         {
             spiderSpwanCount += 3;

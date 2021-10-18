@@ -116,8 +116,20 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(2f);
-        gameCanvas.GetComponent<ButtonCtrl>().OnMainMenuButtonClick();
-        GameFail();
+        try
+        {
+            gameCanvas.GetComponent<ButtonCtrl>().OnMainMenuButtonClick();
+        }
+        catch (System.Exception e)
+        {
+#if UNITY_EDITOR
+            Debug.Log(e);
+#endif
+        }
+        finally
+        {
+            GameFail();
+        }
     }
 
 

@@ -2746,9 +2746,7 @@ MonoBehaviour:
   perk1_Active: 0
   perk2_Active: 0
   _stage: 0
-  _remainEnemyCount: 0
   players: []
-  enemyPoints: []
 --- !u!1 &1304311301
 GameObject:
   m_ObjectHideFlags: 0
