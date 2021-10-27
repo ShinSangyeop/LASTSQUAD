@@ -92,9 +92,30 @@ public class SpwanManager : MonoBehaviour
 
             //Debug.Log("____ Total Count: " + totalCount + " ____");
 
+            List<int> _list = new List<int>();
+            if (enemyCount[0] > 0)
+            {
+                _list.Add(0);
+            }
+            else if (enemyCount[1] > 0)
+            {
+                _list.Add(1);
+            }
+            else if (enemyCount[2] > 0)
+            {
+                _list.Add(2);
+            }
+            else if (enemyCount[3] > 0)
+            {
+                _list.Add(3);
+            }
+
+
             if (enemies.Count < 15 && enemies.Count < totalCount)
             {
-                int selectEnemy = UnityEngine.Random.Range(0, 4);
+                //int selectEnemy = UnityEngine.Random.Range(0, 4);
+                int selectEnemy = UnityEngine.Random.Range(0, _list.Count);
+
                 float randomSpeed = UnityEngine.Random.Range(-0.2f, 0.2f);
 
                 Monster mob = (Monster)selectEnemy;

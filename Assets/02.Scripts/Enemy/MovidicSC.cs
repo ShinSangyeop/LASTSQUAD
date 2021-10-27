@@ -230,10 +230,8 @@ public class MovidicSC : LivingEntity
         enemyAnimator.SetTrigger("IsAttack");
     }
 
-    [SerializeField]
-    Collider bodyCollider1;
-    [SerializeField]
-    Collider bodyCollider2;
+    [SerializeField] Collider bodyCollider1;
+    [SerializeField] Collider bodyCollider2;
 
     IEnumerator RushColliderSetting()
     {

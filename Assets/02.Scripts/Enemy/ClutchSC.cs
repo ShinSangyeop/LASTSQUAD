@@ -19,6 +19,7 @@ public class ClutchSC : LivingEntity
     private bool isTrace = false;
     private bool isAttacking = false;
     private bool isBleed = false;
+    private int targetValue = 5;
 
     Coroutine co_updatePath;
     Coroutine co_changeTarget;
@@ -247,11 +248,12 @@ public class ClutchSC : LivingEntity
 
             if (colliders.Length >= 1)
             {
-                int targetValue = 5;
+                // 타겟의 우선순위 초기화는 제일 낮은 상태 5 0이 제일 높은 우선순위
+                // 우선순위로 타겟을 바꾸기 위함
                 foreach (var collider in colliders)
                 {
                     // targetValue = 0
-                    if (collider.CompareTag("PLAYER"))
+                    if (collider.CompareTag("PLAYER") && targetValue > 0)
                     {
                         targetValue = 0;
                         targetEntity = collider.gameObject;
@@ -283,7 +285,10 @@ public class ClutchSC : LivingEntity
                 //    targetEntity = colliders[0].gameObject;
             }
             else
+            {
+                targetValue = 2;
                 targetEntity = startTarget;
+            }
 
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, attackDistance, 1 << LayerMask.NameToLayer("DEFENSIVEGOODS")))
